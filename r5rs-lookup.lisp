@@ -6,7 +6,7 @@
 
 (defparameter *r5rs-file*
   (merge-pathnames "r5rs-symbols.lisp-expr"
-		   #.*compile-file-pathname*))
+		   (or #.*compile-file-truename* *default-pathname-defaults*)))
 
 (defvar *table* nil)
 

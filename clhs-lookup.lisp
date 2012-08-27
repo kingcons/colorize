@@ -15,7 +15,8 @@
 
 ;;; AMOP.
 (defparameter *mop-map-file*
-  (merge-pathnames "Mop_Sym.txt" #.*compile-file-pathname*))
+  (merge-pathnames "Mop_Sym.txt"
+                   (or #.*compile-file-truename* *default-pathname-defaults*)))
 
 (defparameter *mop-root* "http://www.alu.org/mop/")
 
@@ -30,7 +31,7 @@
 (defvar *read-macro-table* (make-hash-table :test 'equalp))
 
 (defvar *populated-p* nil)
-                                                   
+
 (defun add-clhs-section-to-table (&rest numbers)
   (let ((key (format nil "~{~d~^.~}" numbers))
         (target (concatenate 'string *hyperspec-root* (format nil "Body/~2,'0d_~(~{~36r~}~).htm" (car numbers) (mapcar #'(lambda (x) (+ x 9)) (cdr numbers))))))

@@ -6,7 +6,7 @@
 
 (defparameter *elisp-file*
   (merge-pathnames "elisp-symbols.lisp-expr"
-		   #.*compile-file-pathname*))
+		   (or #.*compile-file-truename* *default-pathname-defaults*)))
 
 (defvar *table* nil)
 

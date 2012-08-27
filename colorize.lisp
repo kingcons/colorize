@@ -7,8 +7,7 @@
   (defparameter *version-token* (gensym)))
 
 (defclass coloring-type ()
-  ((modes :initarg :modes :accessor coloring-type-modes)
-   (default-mode :initarg :default-mode :accessor coloring-type-default-mode)
+  ((default-mode :initarg :default-mode :accessor coloring-type-default-mode)
    (transition-functions :initarg :transition-functions :accessor coloring-type-transition-functions)
    (fancy-name :initarg :fancy-name :accessor coloring-type-fancy-name)
    (term-formatter :initarg :term-formatter :accessor coloring-type-term-formatter)
@@ -64,7 +63,7 @@
     `(labels ((advance (,num)
                (setf ,position-place (+ ,position-place ,num))
                t)
-              (scan-any (,items &key ,not-preceded-by)
+              (peek-any (,items &key ,not-preceded-by)
                (incf *scan-calls*)
                (let* ((,items (if (stringp ,items)
                                   (coerce ,items 'list) ,items))
@@ -98,13 +97,16 @@
                                 t)
                             t)
                         nil)
-                    (progn
-                      (advance (length ,item))
-                      t)
+		    ,item
                     (progn
                       (and *reset-position*
                            (setf ,position-place *reset-position*))
                       nil)))))
+	      (scan-any (,items &key ,not-preceded-by)
+		(let ((,item (peek-any ,items :not-preceded-by ,not-preceded-by)))
+		  (and ,item (advance (length ,item)))))
+	      (peek (,item &key ,not-preceded-by)
+		(peek-any (list ,item) :not-preceded-by ,not-preceded-by))
               (scan (,item &key ,not-preceded-by)
                (scan-any (list ,item) :not-preceded-by ,not-preceded-by)))
       (macrolet ((set-mode (,new-mode &key ,until (,advancing t))
@@ -118,7 +120,7 @@
 
 (defvar *formatter-local-variables*)
 
-(defmacro define-coloring-type (name fancy-name &key modes default-mode transitions formatters
+(defmacro define-coloring-type (name fancy-name &key default-mode transitions formatters
                                 autodetect parent formatter-variables (formatter-after-hook '(constantly ""))
                                 invisible)
   (with-gensyms (parent-type term type string current-mode position position-foobage mode-wait new-position advance)
@@ -128,7 +130,6 @@
       (setf (find-coloring-type ,name)
        (make-instance 'coloring-type
         :fancy-name ',fancy-name
-        :modes (append ',modes (if ,parent-type (coloring-type-modes ,parent-type)))
         :default-mode (or ',default-mode
                           (if ,parent-type (coloring-type-default-mode ,parent-type)))
         ,@(if autodetect
@@ -275,7 +276,8 @@
                                    (error "No such coloring type: ~S" coloring-type)))
          (color-formatter (coloring-type-term-formatter coloring-type-object))
          (*formatter-local-variables* (funcall (coloring-type-formatter-initial-values coloring-type-object))))
-    (format nil "~{~A~}~A"
+    (format nil "<span class=\"~A\">~{~A~}~A</span>"
+	    *css-background-class*
             (mapcar color-formatter scan)
             (funcall (coloring-type-formatter-after-hook coloring-type-object)))))
 
@@ -284,7 +286,7 @@
                (mapcar #'(lambda (p)
                            (cons (car p)
                                  (let ((tt
-                                        (html-encode:encode-for-tt (cdr p))))
+                                        (html-encode:encode-for-pre (cdr p))))
                                    (if (and (> (length tt) 0)
                                             (char= (elt tt (1- (length tt))) #\>))
                                        (format nil "~A~%" tt) tt))))
