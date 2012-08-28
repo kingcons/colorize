@@ -1,0 +1,193 @@
+
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>API for COLORIZE</title>
+<style type="text/css" media="all">
+body {margin: 0 2em .5em 2em;font-family: Verdana,Arial,sans-serif;}
+.package {background: #efefef; 
+          padding: 1.5em 0 1em 0; 
+          text-align: center; 
+          font-size: x-large;}
+.definition {background: #efefef; padding: .3em 1em;}
+a.symbolname, a:visited.symbolname {font-weight: bold;}
+.initargs {font-size: small;}
+.slots {font-size: small;}
+div.label {border-bottom: 1px solid #efefef; margin-bottom: .5em}
+.symboldecl, .footer {margin: 0 2em 2em 2em;}
+.symbolname {font-weight: bold; color: gray;}
+.symboltype {font-style: italic;margin-left: 1.5em; font-size: smaller;}
+.documentation {color: gray; font-family: Fixed,monospace;margin: 0 0 1.5em 0.5em;}
+.packagedocumentation {color: gray; 
+                       font-family: Fixed,monospace;
+                       margin: 0 0 1.5em 0; 
+                       border: 1px solid #efefef; 
+                       padding-left: 1.5em;}
+.symbolcomments span {font-weight: bold;}
+.footer {font-size: x-small; text-align: right; margin-top: 2em; padding-top: 1em; border-top: 1px solid gray;}
+.undocumented {color: red; font-weight: bold;}
+a, a:visited {font-weight: bold; color: gray; text-decoration: none; font-weight: normal;}
+a:hover {border-bottom: 1px solid gray; }
+.label {font-weight: bold; font-style: italic;color: gray;}
+.labeltitle {font-weight: bold; font-style: italic;color: gray; border: 1px solid #efefef; padding: .25em;margin-bottom: .5em}
+.frame {marin-top: 1.5em}
+.expander {border: 2px solid #efefef; color: gray; 
+           font-weight: bold; 
+           font-family: Fixed,monospace; 
+           margin-right: .25em; padding: 0 .25em;cursor: pointer;}
+</style>
+<script type="text/javascript">
+function expand (expander, id) {
+var text = expander.innerHTML;
+if (text == '-')
+{
+  expander.innerHTML = '+';
+  document.getElementById(id).style.display = 'none';
+}
+else
+{
+  expander.innerHTML = '-';
+  document.getElementById(id).style.display = '';
+}
+}</script></head>
+<body>
+<div class="package">
+<div class="definition">API for package: 
+<a class="symbolname" name="colorize_package" href="#colorize_package">colorize</a></div></div>
+<div class="packagedocumentation">
+<pre>Homepage: <a href="http://github.com/redline6561/colorize">Github</a></pre></div>
+<div class="frame">
+<div class="labeltitle">
+<span class="expander" onclick="expand(this, 'vars');">-</span>Variables</div>
+<div id="vars">
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="*coloring-css*_vars" href="#*coloring-css*_vars">*coloring-css*</a>: 
+<span class="value">".symbol { color : #770055; background-color : transparent; border: 0px; margin: 0px;}
+a.symbol:link { color : #229955; background-color : transparent; text-decoration: none; border: 0px; margin: 0px; }
+a.symbol:active { color : #229955; background-color : transparent; text-decoration: none; border: 0px; margin: 0px; }
+a.symbol:visited { color : #229955; background-color : transparent; text-decoration: none; border: 0px; margin: 0px; }
+a.symbol:hover { color : #229955; background-color : transparent; text-decoration: none; border: 0px; margin: 0px; }
+.special { color : #FF5000; background-color : inherit; }
+.keyword { color : #770000; background-color : inherit; }
+.comment { color : #007777; background-color : inherit; }
+.string { color : #777777; background-color : inherit; }
+.atom { color : #314F4F; background-color : inherit; }
+.macro { color : #FF5000; background-color : inherit; }
+.variable { color : #36648B; background-color : inherit; }
+.function { color : #8B4789; background-color : inherit; }
+.attribute { color : #FF5000; background-color : inherit; }
+.character { color : #0055AA; background-color : inherit; }
+.syntaxerror { color : #FF0000; background-color : inherit; }
+.diff-deleted { color : #5F2121; background-color : inherit; }
+.diff-added { color : #215F21; background-color : inherit; }
+span.paren1 { background-color : inherit; -webkit-transition: background-color 0.2s linear; }
+span.paren1:hover { color : inherit; background-color : #BAFFFF; }
+span.paren2 { background-color : inherit; -webkit-transition: background-color 0.2s linear; }
+span.paren2:hover { color : inherit; background-color : #FFCACA; }
+span.paren3 { background-color : inherit; -webkit-transition: background-color 0.2s linear; }
+span.paren3:hover { color : inherit; background-color : #FFFFBA; }
+span.paren4 { background-color : inherit; -webkit-transition: background-color 0.2s linear; }
+span.paren4:hover { color : inherit; background-color : #CACAFF; }
+span.paren5 { background-color : inherit; -webkit-transition: background-color 0.2s linear; }
+span.paren5:hover { color : inherit; background-color : #CAFFCA; }
+span.paren6 { background-color : inherit; -webkit-transition: background-color 0.2s linear; }
+span.paren6:hover { color : inherit; background-color : #FFBAFF; }
+"</span>
+<span class="symboltype">variable</span></div>
+<div class="documentation">
+<pre>UNDOCUMENTED</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="*css-background-class*_vars" href="#*css-background-class*_vars">*css-background-class*</a>: 
+<span class="value">""</span>
+<span class="symboltype">variable</span></div>
+<div class="documentation">
+<pre>UNDOCUMENTED</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="*version-token*_vars" href="#*version-token*_vars">*version-token*</a>: 
+<span class="value">#:G783</span>
+<span class="symboltype">variable</span></div>
+<div class="documentation">
+<pre>UNDOCUMENTED</pre></div></div></div></div>
+<div class="frame">
+<div class="labeltitle">
+<span class="expander" onclick="expand(this, 'functions');">-</span>Functions</div>
+<div id="functions">
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="autodetect-coloring-type_func" href="#autodetect-coloring-type_func">autodetect-coloring-type</a>
+<span class="lambdalist">name</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>:undocumented</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="coloring-types_func" href="#coloring-types_func">coloring-types</a>
+<span class="lambdalist"></span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>Return the supported coloring types as a list of dotted pairs of the form,
+(:keyword . "coloring-type").</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="colorize-file_func" href="#colorize-file_func">colorize-file</a>
+<span class="lambdalist">coloring-type input-file-name &optional output-file-name</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>Given a COLORING-TYPE (keyword) and an INPUT-FILE-NAME, write colorized code to
+INPUT-FILE-NAME.html or OUTPUT-FILE-NAME, if provided.</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="colorize-file-to-stream_func" href="#colorize-file-to-stream_func">colorize-file-to-stream</a>
+<span class="lambdalist">coloring-type input-file-name stream &key (wrap t) (css-background default)</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>Given a COLORING-TYPE, INPUT-FILE-NAME, and a STREAM to write to, output the
+colorized code to the given STREAM. If WRAP is nil, write only the HTML for the
+code snippet.</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="find-coloring-type_func" href="#find-coloring-type_func">find-coloring-type</a>
+<span class="lambdalist">type</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>:undocumented</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="(setf find-coloring-type)_func" href="#(setf find-coloring-type)_func">(setf find-coloring-type)</a>
+<span class="lambdalist">new-value type</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>:undocumented</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="format-scan_func" href="#format-scan_func">format-scan</a>
+<span class="lambdalist">coloring-type scan</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>:undocumented</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="html-colorization_func" href="#html-colorization_func">html-colorization</a>
+<span class="lambdalist">coloring-type string</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>Given a COLORING-TYPE and STRING, return the colorized HTML.</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="make-background-css_func" href="#make-background-css_func">make-background-css</a>
+<span class="lambdalist">color &key (class *css-background-class*) (extra nil)</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>:undocumented</pre></div></div>
+<div class="symboldecl">
+<div class="definition">
+<a class="symbolname" name="scan-string_func" href="#scan-string_func">scan-string</a>
+<span class="lambdalist">coloring-type string</span>
+<span class="symboltype">function</span></div>
+<div class="documentation">
+<pre>:undocumented</pre></div></div></div></div>
+<div class="footer">Generated by: 
+<a href="http://common-lisp.net/project/cl-api">CL-API</a></div></body></html>

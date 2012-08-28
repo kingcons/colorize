@@ -34,6 +34,8 @@
                         (funcall (coloring-type-autodetect-function type) name))))))
 
 (defun coloring-types ()
+  "Return the supported coloring types as a list of dotted pairs of the form,
+(:keyword . \"coloring-type\")."
   (loop for type-pair in *coloring-types*
         if (coloring-type-visible (cdr type-pair))
         collect (cons (car type-pair)
@@ -282,6 +284,7 @@
             (funcall (coloring-type-formatter-after-hook coloring-type-object)))))
 
 (defun html-colorization (coloring-type string)
+  "Given a COLORING-TYPE and STRING, return the colorized HTML."
   (format-scan coloring-type
                (mapcar #'(lambda (p)
                            (cons (car p)
@@ -293,7 +296,11 @@
                        (scan-string coloring-type
                                     string))))
 
-(defun colorize-file-to-stream (coloring-type input-file-name s2 &key (wrap t) (css-background "default"))
+(defun colorize-file-to-stream (coloring-type input-file-name stream
+                                &key (wrap t) (css-background "default"))
+  "Given a COLORING-TYPE, INPUT-FILE-NAME, and a STREAM to write to, output the
+colorized code to the given STREAM. If WRAP is nil, write only the HTML for the
+code snippet."
   (let* ((input-file (if (pathname-type (merge-pathnames input-file-name))
                          (merge-pathnames input-file-name)
                          (make-pathname :type "lisp"
@@ -310,7 +317,7 @@
         (setf string (format nil "~{~A~%~}"
                              (nreverse lines)))
         (if wrap
-            (format s2
+            (format stream
                     "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 <html><head><style type=\"text/css\">~A~%~A</style><body>
 <table width=\"100%\"><tr><td class=\"~A\">
@@ -320,9 +327,11 @@
                     (make-background-css "white")
                     *css-background-class*
                     (html-colorization coloring-type string))
-            (write-string (html-colorization coloring-type string) s2))))))
+            (write-string (html-colorization coloring-type string) stream))))))
 
 (defun colorize-file (coloring-type input-file-name &optional output-file-name)
+  "Given a COLORING-TYPE (keyword) and an INPUT-FILE-NAME, write colorized code to
+INPUT-FILE-NAME.html or OUTPUT-FILE-NAME, if provided."
   (let* ((input-file (if (pathname-type (merge-pathnames input-file-name))
                          (merge-pathnames input-file-name)
                          (make-pathname :type "lisp"
@@ -330,5 +339,5 @@
          (output-file (or output-file-name
                           (make-pathname :type "html"
                                          :defaults input-file))))
-    (with-open-file (s2 output-file :direction :output :if-exists :supersede)
-      (colorize-file-to-stream coloring-type input-file-name s2))))
+    (with-open-file (stream output-file :direction :output :if-exists :supersede)
+      (colorize-file-to-stream coloring-type input-file-name stream))))
