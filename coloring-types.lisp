@@ -203,6 +203,32 @@
                     result (call-parent-formatter))
             (call-parent-formatter)))))))
 
+(define-coloring-type :clojure "Clojure"
+  :parent :lisp
+  :transitions
+  (((:normal :in-list)
+    ((scan "...")
+     (set-mode :symbol
+               :until (scan-any *non-constituent*)
+               :advancing nil))
+    ((scan #\[)
+     (set-mode :in-list
+               :until (scan #\])))
+    ((scan #\{)
+     (set-mode :in-list
+               :until (scan #\})))))
+  :formatters
+  (((:in-list)
+    (lambda (type s)
+      (declare (ignore type s))
+      (let ((*open-parens* (append '(#\{ #\[) *open-parens*))
+            (*close-parens* (append '(#\} #\]) *close-parens*)))
+        (call-parent-formatter))))
+   ((:symbol :escaped-symbol)
+    (lambda (type s)
+      (declare (ignore type))
+      (call-parent-formatter)))))
+
 (define-coloring-type :elisp "Emacs Lisp"
   :parent :lisp
   :formatters

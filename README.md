@@ -3,6 +3,7 @@ colorize is a lisp library for syntax highlighting supporting the following lang
 * Common Lisp, ```:common-lisp```
 * Emacs Lisp, ```:elisp```
 * Scheme, ```:scheme```
+* Clojure, ```:clojure``` *alpha*
 * C, ```:c```
 * C++, ```:c++```
 * Java, ```:java```
