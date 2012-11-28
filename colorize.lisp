@@ -283,24 +283,24 @@
             (mapcar color-formatter scan)
             (funcall (coloring-type-formatter-after-hook coloring-type-object)))))
 
-(defun html-colorization (coloring-type string)
+(defun html-colorization (coloring-type string &optional (encoder 'encode-for-pre))
   "Given a COLORING-TYPE and STRING, return the colorized HTML."
-  (format-scan coloring-type
-               (mapcar #'(lambda (p)
-                           (cons (car p)
-                                 (let ((tt
-                                        (html-encode:encode-for-pre (cdr p))))
-                                   (if (and (> (length tt) 0)
-                                            (char= (elt tt (1- (length tt))) #\>))
-                                       (format nil "~A~%" tt) tt))))
-                       (scan-string coloring-type
-                                    string))))
+  (let* ((encoder-fn (find-symbol (princ-to-string encoder) :html-colorize))
+         (parse-tree (loop for (meta . token) in (scan-string coloring-type string)
+                        for encoded = (funcall encoder-fn token)
+                        if (and (plusp (length encoded))
+                                (char= (elt encoded (1- (length encoded))) #\>))
+                        collect (cons meta (format nil "~A~%" encoded))
+                        else collect (cons meta encoded))))
+    (format-scan coloring-type parse-tree)))
 
 (defun colorize-file-to-stream (coloring-type input-file-name stream
-                                &key (wrap t) (css-background "default"))
+                                &key (wrap t) (css-background "default")
+                                (encoder 'encode-for-pre))
   "Given a COLORING-TYPE, INPUT-FILE-NAME, and a STREAM to write to, output the
 colorized code to the given STREAM. If WRAP is nil, write only the HTML for the
-code snippet."
+code snippet. To wrap in a <tt> element rather than <pre>, pass 'encode-for-tt
+as the ENCODER."
   (let* ((input-file (if (pathname-type (merge-pathnames input-file-name))
                          (merge-pathnames input-file-name)
                          (make-pathname :type "lisp"
@@ -326,8 +326,8 @@ code snippet."
                     *coloring-css*
                     (make-background-css "white")
                     *css-background-class*
-                    (html-colorization coloring-type string))
-            (write-string (html-colorization coloring-type string) stream))))))
+                    (html-colorization coloring-type string encoder))
+            (write-string (html-colorization coloring-type string encoder) stream))))))
 
 (defun colorize-file (coloring-type input-file-name &optional output-file-name)
   "Given a COLORING-TYPE (keyword) and an INPUT-FILE-NAME, write colorized code to
