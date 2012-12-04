@@ -285,7 +285,7 @@
 
 (defun html-colorization (coloring-type string &optional (encoder 'encode-for-pre))
   "Given a COLORING-TYPE and STRING, return the colorized HTML."
-  (let* ((encoder-fn (find-symbol (princ-to-string encoder) :html-colorize))
+  (let* ((encoder-fn (find-symbol (princ-to-string encoder) :html-encode))
          (parse-tree (loop for (meta . token) in (scan-string coloring-type string)
                         for encoded = (funcall encoder-fn token)
                         if (and (plusp (length encoded))
