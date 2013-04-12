@@ -12,7 +12,7 @@
   :maintainer "Brit Butler <redline6561@gmail.com>"
   :version "0.9"
   :licence "MIT"
-  :depends-on (:html-encode :split-sequence)
+  :depends-on (:html-encode :split-sequence :alexandria)
   :components ((:file "colorize-package")
                (:file "coloring-css" :depends-on ("colorize-package"))
                (:file "colorize" :depends-on ("colorize-package" "coloring-css"))
@@ -21,4 +21,5 @@
                (:file "r5rs-lookup")
                (:file "elisp-lookup")
                (:file "coloring-types"
-                      :depends-on ("colorize" "clhs-lookup"))))
+                      :depends-on ("colorize" "clhs-lookup" "coloring-support"))
+	       (:file "coloring-support" :depends-on ("colorize"))))
