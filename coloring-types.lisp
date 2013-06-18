@@ -62,8 +62,7 @@
    ((:normal :first-char-on-line)
     ((scan #\()
      (set-mode :in-list
-               :until (scan #\)))))
-   (:first-char-on-line
+               :until (scan #\))))
     ((scan #\;)
      (set-mode :comment
                :until (scan #\newline)))
