@@ -622,7 +622,7 @@
       (if (eql (length s) 1)
 	  (format-parenthesis (elt s 0)
 			      :open-parens *erlang-open-parens*
-			      :close-parens *erlang-open-parens*
+			      :close-parens *erlang-close-parens*
 			      :paren-counter paren-counter)
 	  s)))
    (:word-ish
