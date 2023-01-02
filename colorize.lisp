@@ -283,9 +283,13 @@
             (mapcar color-formatter scan)
             (funcall (coloring-type-formatter-after-hook coloring-type-object)))))
 
+(defun encoder-fn (encoder)
+  (or (find-symbol (princ-to-string encoder) :html-encode)
+      (error "Unable to find encoder function ~A in the html-encode package" encoder)))
+
 (defun html-colorization (coloring-type string &optional (encoder 'encode-for-pre))
   "Given a COLORING-TYPE and STRING, return the colorized HTML."
-  (let* ((encoder-fn (find-symbol (princ-to-string encoder) :html-encode))
+  (let* ((encoder-fn (encoder-fn encoder))
          (parse-tree (loop for (meta . token) in (scan-string coloring-type string)
                         for encoded = (funcall encoder-fn token)
                         if (and (plusp (length encoded))
@@ -317,16 +321,23 @@ as the ENCODER."
         (setf string (format nil "~{~A~%~}"
                              (nreverse lines)))
         (if wrap
-            (format stream
-                    "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
+            (multiple-value-bind (wrap-open wrap-close)
+                (case (encoder-fn encoder)
+                  (html-encode:encode-for-pre (values "<pre>" "</pre>"))
+                  (html-encode:encode-for-tt (values "<tt>" "</tt>"))
+                  (otherwise (values "" "")))
+              (format stream
+                      "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 <html><head><style type=\"text/css\">~A~%~A</style><body>
 <table width=\"100%\"><tr><td class=\"~A\">
-<tt>~A</tt>
+~A~A~A
 </tr></td></table></body></html>"
-                    *coloring-css*
-                    (make-background-css "white")
-                    *css-background-class*
-                    (html-colorization coloring-type string encoder))
+                      *coloring-css*
+                      (make-background-css "white")
+                      *css-background-class*
+                      wrap-open
+                      (html-colorization coloring-type string encoder)
+                      wrap-close))
             (write-string (html-colorization coloring-type string encoder) stream))))))
 
 (defun colorize-file (coloring-type input-file-name &optional output-file-name)
