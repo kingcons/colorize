@@ -6,6 +6,9 @@
   (defparameter *coloring-types* nil)
   (defparameter *version-token* (gensym)))
 
+(defvar *debug* t
+  "This controls whether or not logging is performed to *TRACE-OUTPUT*.")
+
 (defclass coloring-type ()
   ((default-mode :initarg :default-mode :accessor coloring-type-default-mode)
    (transition-functions :initarg :transition-functions :accessor coloring-type-transition-functions)
@@ -232,8 +235,9 @@
        (if (> current-position (length string))
            (return-from scan-string
              (progn
-               (format *trace-output* "Scan was called ~S times.~%"
-                       *scan-calls*)
+               (when *debug*
+                 (format *trace-output* "Scan was called ~S times.~%"
+                         *scan-calls*))
                (finish-current (length string) nil (constantly nil))
                result))
            (or
